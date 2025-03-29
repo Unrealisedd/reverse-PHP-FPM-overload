@@ -249,11 +249,6 @@ Security teams should adopt the following approaches to detect and mitigate the 
 - **Track and inspect opcache entries** to identify any unexpected or unauthorized cached scripts.
 - **Audit systemd/init scripts** and configuration files to ensure no hidden worker pools or unauthorized persistence mechanisms are present.
 
-### Future Research Directions:
-As detection methods evolve, future research could explore advanced techniques, such as **kernel-level rootkits** or **syscall hooking**, to further obscure malicious activities and make detection even harder. By targeting lower levels of the operating system and intercepting system calls, attackers could bypass even more sophisticated monitoring tools, making such attacks increasingly difficult to detect and defend against.
-
-By understanding and defending against techniques like Reverse PHP-FPM Overload, security professionals can enhance their ability to secure PHP-FPM environments and safeguard against increasingly sophisticated persistence mechanisms.
-
 ---
 
 **Disclaimer:** This research is for educational purposes only. Unauthorized use against live systems is illegal.  
