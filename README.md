@@ -1,14 +1,17 @@
 # Reverse PHP-FPM Overload - A Stealthy PHP Persistence Technique  
 
 ## Introduction  
-**Reverse PHP-FPM Overload** is a novel persistence technique that abuses PHP-FPM's worker pool to maintain a **memory-resident backdoor** without leaving traces on disk. This method ensures persistence by dynamically reloading the backdoor even after a PHP-FPM restart, making it **extremely difficult to detect** using traditional forensic methods.  
 
-By modifying PHP-FPM’s process pool, an attacker can **ensure that a specific worker executes a hidden payload** when triggered via a seemingly normal request. This method is designed to:  
-- **Avoid traditional file-based detection** (the payload never touches disk).  
-- **Persist across PHP-FPM restarts** through systemd/init modifications.  
-- **Evade common security tools** by operating entirely in memory.  
+So I have been thinking, and I came up with this idea—what if you could create a **completely fileless backdoor** inside PHP-FPM that never touches disk, survives restarts, and remains practically invisible to standard security tools? So I thought about this for a bit. I'm not sure if it already exists or not but this is what I came up with.
 
-This write-up explores how the technique works, how it can be improved, and what defenders can do to detect or mitigate it.  
+The idea is simple: **abuse PHP-FPM’s worker pool to execute a hidden payload entirely in memory**, ensuring it never gets written to a file where it could be detected. By modifying how PHP-FPM processes requests, you can **ensure that a specific worker executes a malicious payload only when triggered by a seemingly normal request**—like an invalid API call that looks completely harmless to anyone monitoring logs.  
+
+Here’s why this method is **so effective**:  
+- **No forensic trail** – Since the payload never touches disk, traditional file-based detection methods are useless.  
+- **Persists through restarts** – Even if PHP-FPM gets restarted, the backdoor can be **reloaded dynamically** through systemd/init modifications.  
+- **Completely stealthy** – Because it operates in memory and only executes under specific conditions, most security tools won’t even know it’s there.  
+
+This isn’t just theoretical—I’ll break down how it works, the proof of concept, and even how defenders can try to detect it (though, to be honest, it’s not easy). Let’s dive in.
 
 ---
 
